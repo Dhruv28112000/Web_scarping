@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+         "vnetcnt" :{
+            "type" : "int",
+            "defaultValue" : 2
+        }
+    },
+    "functions": [],
+    "variables": {
+       
+    },
+    
+    "resources": [
+        {
+            
+          "name": "[concat('vnet-', copyIndex())]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "location": "[resourceGroup().location]",
+
+            "copy": {
+                "name" : "vnets",
+                "count" : "[parameters('vnetcnt')]"
+            },
+  
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "Subnet-1",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+
+                ]
+            }
+        }
+    ],
+    "outputs": {}
+}
